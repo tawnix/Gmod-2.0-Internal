@@ -327,14 +327,9 @@ class IClientEntity : public IClientUnknown, public IClientRenderable, public IC
 public:
 	virtual ~IClientEntity();
 
-	int GetHealth() {
-		return *(int*)(((uintptr_t)this + 0x90));
-	}
+	int GetHealth() { return *(int*)(((uintptr_t)this + 0x90)); }
 
-	Vector GetOrigin() {
-		Vector CurrOrigin;
-		return *(Vector*)(((uintptr_t)this + 0x260));
-	}
+	Vector GetOrigin() { Vector CurrOrigin; return *(Vector*)(((uintptr_t)this + 0x260)); }
 
 };
 
