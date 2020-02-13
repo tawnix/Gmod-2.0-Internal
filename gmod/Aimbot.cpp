@@ -14,7 +14,7 @@ IClientEntity* aimbot::GetBestEnt()
 		if (!IsValid(pCurrentEnt))
 			continue;
 
-		currDiff = oMath.GetDistanceBetween(*(Vector*)(((uintptr_t)pLocalPlayer + 0x260)), *(Vector*)(((uintptr_t)pCurrentEnt + 0x260)));
+		currDiff = oMath.GetDistanceBetween(pLocalPlayer->GetOrigin(), pCurrentEnt->GetOrigin());
 
 		if (currDiff < oldDifference)
 		{
@@ -36,7 +36,7 @@ bool aimbot::IsValid(IClientEntity* ent)
 	if (ent->GetClientClass()->m_ClassID != 70)
 		return false;
 
-	if (*(int*)(((uintptr_t)ent + 0x90)) <= 0 || *(int*)(((uintptr_t)ent + 0x90)) >= 999999)
+	if (ent->GetHealth() <= 0 || ent->GetHealth() >= 999999)
 		return false;
 
 	return true;
@@ -100,7 +100,7 @@ void aimbot::StartAim()
 	int headBoneIndex = GetHeadBone(pCurrentEnt, boneArray[12]);
 	Vector bonePosition = GetBonePos(pCurrentEnt, headBoneIndex);
 
-	toAim = oMath.CalcAngle(*(Vector*)(((uintptr_t)pLocalPlayer + 0x260)), bonePosition);
+	toAim = oMath.CalcAngle(pLocalPlayer->GetOrigin(), bonePosition);
 
 }
 

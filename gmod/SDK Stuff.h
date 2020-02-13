@@ -328,12 +328,12 @@ public:
 	virtual ~IClientEntity();
 
 	int GetHealth() {
-		return *(int*)(this + 0x90);
+		return *(int*)(((uintptr_t)this + 0x90));
 	}
 
 	Vector GetOrigin() {
 		Vector CurrOrigin;
-		return *(Vector*)(this + 0x260);
+		return *(Vector*)(((uintptr_t)this + 0x260));
 	}
 
 };
