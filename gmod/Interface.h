@@ -35,4 +35,6 @@ struct CInterfaces
 	static IEngineClient* pEngine;
 	static IVModelInfo* pModelInfo;
 	static CHLClient* pClient;
+	static IPanel* pPanel;
+	static ISurface* pSurface;
 };

@@ -3,6 +3,7 @@
 #include "InterfaceVT.h"
 #include "Matrix.h"
 #include "ModelInfo.h"
+#include "Color.h"
 
 class IClientNetworkable;
 
@@ -17,85 +18,16 @@ class CGameEventListener {
 
 };
 
-/*class CUserCmd
+class IBaseInterface
 {
-public:
-	virtual ~CUserCmd() {};
-	CUserCmd()
-	{
-		reset();
-	}
 
-	void reset()
-	{
-		i_command_number = 0;
-		i_tick_count = 0;
-		viewangles.Init();
-		fl_forward_move = 0.0f;
-		fl_side_move = 0.0f;
-		fl_up_move = 0.0f;
-		i_buttons = 0;
-		impulse = 0;
-		i_weapon_select = 0;
-		i_weapon_sub_type = 0;
-		random_seed = 0;
-		mousedx = 0;
-		mousedy = 0;
-		headangles.Init();
-		headoffset.Init();
-
-		b_has_been_predicted = false;
-	}
-
-	CUserCmd& operator =(const CUserCmd& src)
-	{
-		if (this == &src)
-			return *this;
-
-		i_command_number = src.i_command_number;
-		i_tick_count = src.i_tick_count;
-		viewangles = src.viewangles;
-		fl_forward_move = src.fl_forward_move;
-		fl_side_move = src.fl_side_move;
-		fl_up_move = src.fl_up_move;
-		i_buttons = src.i_buttons;
-		impulse = src.impulse;
-		i_weapon_select = src.i_weapon_select;
-		i_weapon_sub_type = src.i_weapon_sub_type;
-		random_seed = src.random_seed;
-		mousedx = src.mousedx;
-		mousedy = src.mousedy;
-
-		b_has_been_predicted = src.b_has_been_predicted;
-		headangles = src.headangles;
-		headoffset = src.headoffset;
-		return *this;
-	}
-
-	CUserCmd(const CUserCmd& src)
-	{
-		*this = src;
-	}
-
-	int i_command_number;
-	int i_tick_count;
-	Vector viewangles;
-	Vector aimdirection;
-	float fl_forward_move;
-	float fl_side_move;
-	float fl_up_move;
-	int  i_buttons;
-	BYTE impulse;
-	int  i_weapon_select;
-	int  i_weapon_sub_type;
-	int  random_seed;
-	short mousedx;
-	short mousedy;
-	bool b_has_been_predicted;
-	Vector headangles;
-	Vector headoffset;
 };
-*/
+
+class IAppSystem
+{
+
+};
+
 
 class CUserCmd {
 public:
@@ -825,3 +757,397 @@ private:
 	void* m_pWeaponSelection;
 	int						m_nRootSize[2];
 };
+
+
+class IPanel : public IBaseInterface
+{
+public:
+	virtual void Init(unsigned int vguiPanel, void* panel) = 0;
+
+	// methods
+	virtual void SetPos(unsigned int vguiPanel, int x, int y) = 0;
+	virtual void GetPos(unsigned int vguiPanel, int& x, int& y) = 0;
+	virtual void SetSize(unsigned int vguiPanel, int wide, int tall) = 0;
+	virtual void GetSize(unsigned int vguiPanel, int& wide, int& tall) = 0;
+	virtual void SetMinimumSize(unsigned int vguiPanel, int wide, int tall) = 0;
+	virtual void GetMinimumSize(unsigned int vguiPanel, int& wide, int& tall) = 0;
+	virtual void SetZPos(unsigned int vguiPanel, int z) = 0;
+	virtual int  GetZPos(unsigned int vguiPanel) = 0;
+
+	virtual void GetAbsPos(unsigned int vguiPanel, int& x, int& y) = 0;
+	virtual void GetClipRect(unsigned int vguiPanel, int& x0, int& y0, int& x1, int& y1) = 0;
+	virtual void SetInset(unsigned int vguiPanel, int left, int top, int right, int bottom) = 0;
+	virtual void GetInset(unsigned int vguiPanel, int& left, int& top, int& right, int& bottom) = 0;
+
+	virtual void SetVisible(unsigned int vguiPanel, bool state) = 0;
+	virtual bool IsVisible(unsigned int vguiPanel) = 0;
+	virtual void SetParent(unsigned int vguiPanel, unsigned int newParent) = 0;
+	virtual int GetChildCount(unsigned int vguiPanel) = 0;
+	virtual unsigned int GetChild(unsigned int vguiPanel, int index) = 0;
+	virtual void* GetChildren(unsigned int vguiPanel) = 0;
+	virtual unsigned int GetParent(unsigned int vguiPanel) = 0;
+	virtual void MoveToFront(unsigned int vguiPanel) = 0;
+	virtual void MoveToBack(unsigned int vguiPanel) = 0;
+	virtual bool HasParent(unsigned int vguiPanel, unsigned int potentialParent) = 0;
+	virtual bool IsPopup(unsigned int vguiPanel) = 0;
+	virtual void SetPopup(unsigned int vguiPanel, bool state) = 0;
+	virtual bool IsFullyVisible(unsigned int vguiPanel) = 0;
+
+	// gets the scheme this panel uses
+	virtual void* GetScheme(unsigned int vguiPanel) = 0;
+	// gets whether or not this panel should scale with screen resolution
+	virtual bool IsProportional(unsigned int vguiPanel) = 0;
+	// returns true if auto-deletion flag is set
+	virtual bool IsAutoDeleteSet(unsigned int vguiPanel) = 0;
+	// deletes the Panel * associated with the unsigned int
+	virtual void DeletePanel(unsigned int vguiPanel) = 0;
+
+	// input interest
+	virtual void SetKeyBoardInputEnabled(unsigned int vguiPanel, bool state) = 0;
+	virtual void SetMouseInputEnabled(unsigned int vguiPanel, bool state) = 0;
+	virtual bool IsKeyBoardInputEnabled(unsigned int vguiPanel) = 0;
+	virtual bool IsMouseInputEnabled(unsigned int vguiPanel) = 0;
+
+	// calculates the panels current position within the hierarchy
+	virtual void Solve(unsigned int vguiPanel) = 0;
+
+	// gets names of the object (for debugging purposes)
+	virtual const char* GetName(unsigned int vguiPanel) = 0;
+	virtual const char* GetClassName(unsigned int vguiPanel) = 0;
+
+	// delivers a message to the panel
+	virtual void SendMessage(unsigned int vguiPanel, void* params, unsigned int ifromPanel) = 0;
+
+	// these pass through to the IClientPanel
+	virtual void Think(unsigned int vguiPanel) = 0;
+	virtual void PerformApplySchemeSettings(unsigned int vguiPanel) = 0;
+	virtual void PaintTraverse(unsigned int vguiPanel, bool forceRepaint, bool allowForce = true) = 0;
+	virtual void Repaint(unsigned int vguiPanel) = 0;
+	virtual unsigned int IsWithinTraverse(unsigned int vguiPanel, int x, int y, bool traversePopups) = 0;
+	virtual void OnChildAdded(unsigned int vguiPanel, unsigned int child) = 0;
+	virtual void OnSizeChanged(unsigned int vguiPanel, int newWide, int newTall) = 0;
+
+	virtual void InternalFocusChanged(unsigned int vguiPanel, bool lost) = 0;
+	virtual bool RequestInfo(unsigned int vguiPanel, void* outputData) = 0;
+	virtual void RequestFocus(unsigned int vguiPanel, int direction = 0) = 0;
+	virtual bool RequestFocusPrev(unsigned int vguiPanel, unsigned int existingPanel) = 0;
+	virtual bool RequestFocusNext(unsigned int vguiPanel, unsigned int existingPanel) = 0;
+	virtual unsigned int GetCurrentKeyFocus(unsigned int vguiPanel) = 0;
+	virtual int GetTabPosition(unsigned int vguiPanel) = 0;
+
+	// used by ISurface to store platform-specific data
+	virtual void* Plat(unsigned int vguiPanel) = 0;
+	virtual void SetPlat(unsigned int vguiPanel, void* Plat) = 0;
+
+	// returns a pointer to the vgui controls baseclass Panel *
+	// destinationModule needs to be passed in to verify that the returned Panel * is from the same module
+	// it must be from the same module since Panel * vtbl may be different in each module
+	virtual void* GetPanel(unsigned int vguiPanel, const char* destinationModule) = 0;
+
+	virtual bool IsEnabled(unsigned int vguiPanel) = 0;
+	virtual void SetEnabled(unsigned int vguiPanel, bool state) = 0;
+
+	// Used by the drag/drop manager to always draw on top
+	virtual bool IsTopmostPopup(unsigned int vguiPanel) = 0;
+	virtual void SetTopmostPopup(unsigned int vguiPanel, bool state) = 0;
+
+	// sibling pins
+	virtual void SetSiblingPin(unsigned int vguiPanel, unsigned int newSibling, byte iMyCornerToPin = 0, byte iSiblingCornerToPinTo = 0) = 0;
+
+};
+
+struct Vertex_t
+{
+	
+
+	void*	m_Position;
+	void*	m_TexCoord;
+};
+// Refactor these two
+struct CharRenderInfo
+{
+	// Text pos
+	int				x, y;
+	// Top left and bottom right
+	// This is now a pointer to an array maintained by the surface, to avoid copying the data on the 360
+	Vertex_t* verts;
+	int				textureId;
+	int				abcA;
+	int				abcB;
+	int				abcC;
+	int				fontTall;
+	void*			currentFont;
+	// In:
+	void*	drawType;
+	wchar_t			ch;
+
+	// Out
+	bool			valid;
+	// In/Out (true by default)
+	bool			shouldclip;
+};
+
+class ISurface : public IAppSystem
+{
+public:
+	// call to Shutdown surface; surface can no longer be used after this is called
+	virtual void		Shutdown() = 0;
+
+	// frame
+	virtual void		RunFrame() = 0;
+
+	// hierarchy root
+	virtual unsigned int* GetEmbeddedPanel() = 0;
+	virtual void		SetEmbeddedPanel(unsigned int* pPanel) = 0;
+
+	// drawing context
+	virtual void		PushMakeCurrent(unsigned int* panel, bool useInsets) = 0;
+	virtual void		PopMakeCurrent(unsigned int* panel) = 0;
+
+	// rendering functions
+	virtual void		DrawSetColor(int r, int g, int b, int a) = 0;
+	virtual void		DrawSetColor(Color col) = 0;
+
+	virtual void		DrawFilledRect(int x0, int y0, int x1, int y1) = 0;
+	virtual void		DrawFilledRectArray(void* pRects, int numRects) = 0;
+	virtual void		DrawOutlinedRect(int x0, int y0, int x1, int y1) = 0;
+
+	virtual void		DrawLine(int x0, int y0, int x1, int y1) = 0;
+	virtual void		DrawPolyLine(int* px, int* py, int numPoints) = 0;
+
+	virtual void		DrawSetTextFont(int font) = 0;
+	virtual void		DrawSetTextColor(int r, int g, int b, int a) = 0;
+	virtual void		DrawSetTextColor(Color col) = 0;
+	virtual void		DrawSetTextPos(int x, int y) = 0;
+	virtual void		DrawGetTextPos(int& x, int& y) = 0;
+	virtual void		DrawPrintText(const wchar_t* text, int textLen, void* drawType = 0) = 0;
+	virtual void		DrawUnicodeChar(wchar_t wch, void* drawType = 0) = 0;
+
+	virtual void		DrawFlushText() = 0;		// flushes any buffered text (for rendering optimizations)
+	virtual void* CreateHTMLWindow(void* events, unsigned int* context) = 0;
+	virtual void		Nothing__00(void*) = 0;
+	virtual void		Nothing__01(void*) = 0;
+
+	enum ETextureFormat
+	{
+		eTextureFormat_RGBA,
+		eTextureFormat_BGRA,
+		eTextureFormat_BGRA_Opaque, // bgra format but alpha is always 255, CEF does this, we can use this fact for better perf on win32 gdi
+	};
+	virtual int			DrawGetTextureId(char const* filename) = 0;
+	virtual bool		DrawGetTextureFile(int id, char* filename, int maxlen) = 0;
+	virtual void		DrawSetTextureFile(int id, const char* filename, int hardwareFilter, bool forceReload) = 0;
+	virtual void		DrawSetTextureRGBA(int id, const unsigned char* rgba, int wide, int tall, int hardwareFilter, bool forceReload) = 0;
+	virtual void		DrawSetTexture(int id) = 0;
+	virtual void		DrawGetTextureSize(int id, int& wide, int& tall) = 0;
+	virtual void		DrawTexturedRect(int x0, int y0, int x1, int y1) = 0;
+	virtual bool		IsTextureIDValid(int id) = 0;
+	virtual bool		DeleteTextureByID(int id) = 0;
+
+	virtual int			CreateNewTextureID(bool procedural = false) = 0;
+
+	virtual void		GetScreenSize(int& wide, int& tall) = 0;
+	virtual void		Nothing__02() = 0;
+	virtual void		BringToFront(unsigned int* panel) = 0;
+	virtual void		SetForegroundWindow(unsigned int* panel) = 0;
+	virtual void		Nothing__03() = 0;
+	virtual void		SetMinimized(unsigned int* panel, bool state) = 0;
+	virtual bool		IsMinimized(unsigned int* panel) = 0;
+	virtual void		Nothing__04() = 0;
+	virtual void		SetTitle(unsigned int* panel, const wchar_t* title) = 0;
+	virtual void		Nothing__05() = 0;
+
+	// windows stuff
+	virtual void		CreatePopup(unsigned int* panel, bool minimised, bool showTaskbarIcon = true, bool disabled = false, bool mouseInput = true, bool kbInput = true) = 0;
+	virtual void		SwapBuffers(unsigned int* panel) = 0;
+	virtual void		Invalidate(unsigned int* panel) = 0;
+	virtual void		SetCursor(void* cursor) = 0;
+	virtual void		SetCursorAlwaysVisible(bool visible) = 0;
+	virtual bool		IsCursorVisible() = 0;
+	virtual void		Nothing__08() = 0;
+	virtual bool		IsWithin(int x, int y) = 0;
+	virtual bool		HasFocus() = 0;
+
+	// returns true if the surface supports minimize & maximize capabilities
+	enum SurfaceFeature_e
+	{
+		ANTIALIASED_FONTS = 1,
+		DROPSHADOW_FONTS = 2,
+		ESCAPE_KEY = 3,
+		OPENING_NEW_HTML_WINDOWS = 4,
+		FRAME_MINIMIZE_MAXIMIZE = 5,
+		OUTLINE_FONTS = 6,
+		DIRECT_HWND_RENDER = 7,
+	};
+	virtual bool		SupportsFeature(SurfaceFeature_e feature) = 0;
+
+	// restricts what gets drawn to one panel and it's children
+	// currently only works in the game
+	virtual void		RestrictPaintToSinglePanel(unsigned int panel) = 0;
+	virtual void		Nothing__09() = 0;
+	virtual void		Nothing__10() = 0;
+
+	virtual void		UnlockCursor() = 0;
+	virtual void		LockCursor() = 0;
+	virtual void		Nothing__11() = 0;
+	virtual void		Nothing__12() = 0;
+	virtual void		SetTopLevelFocus(unsigned int panel) = 0;
+	virtual int			ISCreateFont() = 0;
+	virtual bool		SetFontGlyphSet(int font, const char* windowsFontName, int tall, int weight, int blur, int scanlines, int flags, int nRangeMin = 0, int nRangeMax = 0) = 0;
+	virtual bool		SetFontGlyphSet_Extended() = 0; // just use above lol.
+
+	// adds a custom font file (only supports true type font files (.ttf) for now)
+	virtual bool		AddCustomFontFile(const char* fontName, const char* fontFileName) = 0;
+
+	// returns the details about the font
+	virtual int			GetFontTall(int font) = 0;
+	virtual int			GetFontTallRequested(int font) = 0;
+	virtual int			GetFontAscent(int font, wchar_t wch) = 0;
+	virtual bool		IsFontAdditive(int font) = 0;
+	virtual void		GetCharABCwide(int font, int ch, int& a, int& b, int& c) = 0;
+	virtual int			GetCharacterWidth(int font, int ch) = 0;
+	virtual void		GetTextSize(int font, const wchar_t* text, int& wide, int& tall) = 0;
+
+	virtual void		Nothing__13() = 0;
+	virtual void		Nothing__14() = 0;
+
+	// plays a sound
+	virtual void		ISPlaySound(const char* fileName) = 0;
+
+
+	//!! these functions should not be accessed directly, but only through other vgui items
+	//!! need to move these to seperate interface
+	virtual int			GetPopupCount() = 0;
+	virtual unsigned int* GetPopup(int index) = 0;
+	virtual bool		ShouldPaintChildPanel(unsigned int* childPanel) = 0;
+	virtual bool		RecreateContext(unsigned int* panel) = 0;
+	virtual void		AddPanel(unsigned int* panel) = 0;
+	virtual void		ReleasePanel(unsigned int* panel) = 0;
+	virtual void		MovePopupToFront(unsigned int* panel) = 0;
+	virtual void		MovePopupToBack(unsigned int* panel) = 0;
+
+	virtual void		SolveTraverse(unsigned int* panel, bool forceApplySchemeSettings = false) = 0;
+	virtual void		PaintTraverse(unsigned int* panel) = 0;
+
+	virtual void		EnableMouseCapture(unsigned int* panel, bool state) = 0;
+
+	// returns the size of the workspace
+	virtual void		GetWorkspaceBounds(int& x, int& y, int& wide, int& tall) = 0;
+
+	// gets the absolute coordinates of the screen (in windows space)
+	virtual void		GetAbsoluteWindowBounds(int& x, int& y, int& wide, int& tall) = 0;
+
+	// gets the base resolution used in proportional mode
+	virtual void		GetProportionalBase(int& width, int& height) = 0;
+
+	virtual void		CalculateMouseVisible() = 0;
+	virtual bool		NeedKBInput() = 0;
+
+	virtual void		Nothing__15() = 0;
+
+	virtual void		SurfaceGetCursorPos(int& x, int& y) = 0;
+	virtual void		SurfaceSetCursorPos(int x, int y) = 0;
+
+	// SRC only functions!!!
+	virtual void		DrawTexturedLine(const Vertex_t& a, const Vertex_t& b) = 0;
+	virtual void		DrawOutlinedCircle(int x, int y, int radius, int segments) = 0;
+	virtual void		DrawTexturedPolyLine(const Vertex_t* p, int n) = 0; // (Note: this connects the first and last points).
+	virtual void		DrawTexturedSubRect(int x0, int y0, int x1, int y1, float texs0, float text0, float texs1, float text1) = 0;
+	virtual void		DrawTexturedPolygon(int n, Vertex_t* pVertice, bool bClipVertices = true) = 0;
+	virtual const wchar_t* GetTitle(unsigned int panel) = 0;
+	virtual bool		IsCursorLocked(void) const = 0;
+	virtual void		SetWorkspaceInsets(int left, int top, int right, int bottom) = 0;
+	// Lower level char drawing code, call DrawGet then pass in info to DrawRender
+	virtual bool		DrawGetUnicodeCharRenderInfo(wchar_t ch, CharRenderInfo& info) = 0;
+	virtual void		DrawRenderCharFromInfo(const CharRenderInfo& info) = 0;
+
+	// global alpha setting functions
+	// affect all subsequent draw calls - shouldn't normally be used directly, only in Panel::PaintTraverse()
+	virtual void		DrawSetAlphaMultiplier(float alpha /* [0..1] */) = 0;
+	virtual float		DrawGetAlphaMultiplier() = 0;
+
+	// web browser
+	virtual void		SetAllowHTMLJavaScript(bool state) = 0;
+
+	// video mode changing
+	virtual void		OnScreenSizeChanged(int nOldWidth, int nOldHeight) = 0;
+
+	virtual void		Nothing__16() = 0;
+
+	// create IVguiMatInfo object ( IMaterial wrapper in VguiMatSurface, NULL in CWin32Surface )
+	virtual void* DrawGetTextureMatInfoFactory(int id) = 0;
+
+	virtual void		PaintTraverseEx(unsigned int panel, bool paintPopups = false) = 0;
+	virtual float		GetZPos() const = 0;
+
+	// From the Xbox
+	virtual void		SetPanelForInput(unsigned int vpanel) = 0;
+	virtual void		DrawFilledRectFastFade(int x0, int y0, int x1, int y1, int fadeStartPt, int fadeEndPt, unsigned int alpha0, unsigned int alpha1, bool bHorizontal) = 0;
+	virtual void		DrawFilledRectFade(int x0, int y0, int x1, int y1, unsigned int alpha0, unsigned int alpha1, bool bHorizontal) = 0;
+	virtual void		DrawSetTextureRGBAEx(int id, const unsigned char* rgba, int wide, int tall, void* imageFormat) = 0;
+	virtual void		DrawSetTextScale(float sx, float sy) = 0;
+	virtual bool		SetBitmapFontGlyphSet(int font, const char* windowsFontName, float scalex, float scaley, int flags) = 0;
+
+	// adds a bitmap font file
+	virtual bool		AddBitmapFontFile(const char* fontFileName) = 0;
+	// sets a symbol for the bitmap font
+	virtual void		SetBitmapFontName(const char* pName, const char* pFontFilename) = 0;
+	// gets the bitmap font filename
+	virtual const char* GetBitmapFontName(const char* pName) = 0;
+	virtual void		ClearTemporaryFontCache(void) = 0;
+	virtual void* GetIconImageForFullPath(char const* pFullPath) = 0;
+	virtual void		DrawUnicodeString(const wchar_t* pwString, void* drawType = 0) = 0;
+	virtual void		PrecacheFontCharacters(int font, const wchar_t* pCharacters) = 0;
+	// Console-only.  Get the string to use for the current video mode for layout files.
+	virtual const char* GetResolutionKey(void) const = 0;
+	virtual const char* GetFontName(int font) = 0;
+	virtual const char* GetFontFamilyName(int font) = 0;
+	virtual void		GetKernedCharWidth(int font, wchar_t ch, wchar_t chBefore, wchar_t chAfter, float& wide, float& abcA) = 0;
+	virtual bool		ForceScreenSizeOverride(bool bState, int wide, int tall) = 0;
+	// LocalToScreen, ParentLocalToScreen fixups for explicit PaintTraverse calls on Panels not at 0, 0 position
+	virtual bool		ForceScreenPosOffset(bool bState, int x, int y) = 0;
+	virtual void		OffsetAbsPos(int& x, int& y) = 0;
+
+	// Causes fonts to get reloaded, etc.
+	virtual void		ResetFontCaches() = 0;
+
+	virtual int			GetTextureNumFrames(int id) = 0;
+	virtual void		DrawSetTextureFrame(int id, int nFrame, unsigned int* pFrameCache) = 0;
+	virtual bool		IsScreenSizeOverrideActive(void) = 0;
+	virtual bool		IsScreenPosOverrideActive(void) = 0;
+
+	virtual void		DestroyTextureID(int id) = 0;
+
+	virtual void		DrawUpdateRegionTextureRGBA(int nTextureID, int x, int y, const unsigned char* pchData, int wide, int tall, void* imageFormat) = 0;
+
+	virtual void		Nothing__17() = 0;
+
+	virtual const char* GetWebkitHTMLUserAgentString() = 0;
+
+	virtual void* AccessChromeHTMLController() = 0;
+
+	// the origin of the viewport on the framebuffer (Which might not be 0,0 for stereo)
+	virtual void		SetFullscreenViewport(int x, int y, int w, int h) = 0; // this uses NULL for the render target.
+	virtual void		GetFullscreenViewport(int& x, int& y, int& w, int& h) = 0;
+	virtual void		PushFullscreenViewport() = 0;
+	virtual void		PopFullscreenViewport() = 0;
+
+	// handles support for software cursors
+	virtual void		SetSoftwareCursor(bool bUseSoftwareCursor) = 0;
+	virtual void		PaintSoftwareCursor() = 0;
+
+
+
+	void DrawSetColor2(int r, int g, int b, int a)
+	{
+		typedef void(__thiscall* fn)(void*, int, int, int, int);
+		getvfunc<fn>(this, 11)(this, r, g, b, a);
+	}
+
+	void DrawFilledRect2(int x0, int y0, int x1, int y1)
+	{
+		typedef void(__thiscall* fn)(void*, int, int, int, int);
+		getvfunc<fn>(this, 12)(this, x0, y0, x1, y1);
+	}
+};
+

@@ -65,12 +65,53 @@ public:
     }
 };
 
-
 typedef bool(__thiscall* createMove_t)(void*, float, CUserCmd*);
 createMove_t oCreateMove;
 
+typedef void(__thiscall* paintTraverse_t)(void*, unsigned int, bool, bool);
+paintTraverse_t oPaintTraverse;
+
+
 
 VmtHook* v_hook;
+VmtHook* v_hook2;
+
+//use unsigned int for guipanel because i couldnt find defenition in sdk lool
+void __fastcall PaintTraverseFn(void* ecx, void* edx, unsigned int vguiPanel, bool forceRepaint, bool allowForce)
+{
+    oPaintTraverse = (paintTraverse_t)v_hook2->GetOriginalFunction(41);
+    oPaintTraverse(ecx, vguiPanel, forceRepaint, allowForce);
+
+    int x, y;
+    CInterfaces::pEngine->GetScreenSize(x, y);
+
+    CInterfaces::pSurface->DrawSetColor2(0, 0, 255, 255);
+
+    if (CInterfaces::pEngine->IsInGame())
+    {
+        static unsigned int drawPanel;
+
+        const char* pannelName = CInterfaces::pPanel->GetName(vguiPanel);
+        //check to see if pannel name is matsurface
+        if (pannelName[0] == 'M' && pannelName[2] == 't')
+            drawPanel = vguiPanel;
+
+
+        if (vguiPanel != drawPanel)
+        {
+            return;
+        }
+        else
+        {
+            CInterfaces::pSurface->DrawFilledRect2(0, 0, 500, 500);
+        }
+
+
+
+
+    }
+}
+
 
 
 bool __fastcall CreateMoveFn(void* ecx, void* edx, float SampleTime, CUserCmd* cmd)
@@ -99,6 +140,8 @@ bool __fastcall CreateMoveFn(void* ecx, void* edx, float SampleTime, CUserCmd* c
 }
 
 
+
+
 void GrabClientModeShared()
 {
 	ClientModeShared* ClientShared = **reinterpret_cast<ClientModeShared***>((*reinterpret_cast<uintptr_t**>(CInterfaces::pClient))[10] + 5);
@@ -106,7 +149,16 @@ void GrabClientModeShared()
     v_hook = new VmtHook(reinterpret_cast<void*>(ClientShared));
 
     (createMove_t)v_hook->HookFunction(static_cast<void*>(CreateMoveFn), 21);
+    
+    v_hook2 = new VmtHook(reinterpret_cast<void*>(CInterfaces::pPanel));
+
+    (paintTraverse_t)v_hook2->HookFunction(static_cast<void*>(PaintTraverseFn), 41);
+
+
 
 }
+
+
+
 
 
