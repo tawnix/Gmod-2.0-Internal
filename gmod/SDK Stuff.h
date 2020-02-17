@@ -784,7 +784,7 @@ public:
 	virtual void SetParent(unsigned int vguiPanel, unsigned int newParent) = 0;
 	virtual int GetChildCount(unsigned int vguiPanel) = 0;
 	virtual unsigned int GetChild(unsigned int vguiPanel, int index) = 0;
-	virtual void* GetChildren(unsigned int vguiPanel) = 0;
+	virtual void*& GetChildren(unsigned int vguiPanel) = 0;
 	virtual unsigned int GetParent(unsigned int vguiPanel) = 0;
 	virtual void MoveToFront(unsigned int vguiPanel) = 0;
 	virtual void MoveToBack(unsigned int vguiPanel) = 0;
@@ -854,6 +854,11 @@ public:
 	// sibling pins
 	virtual void SetSiblingPin(unsigned int vguiPanel, unsigned int newSibling, byte iMyCornerToPin = 0, byte iSiblingCornerToPinTo = 0) = 0;
 
+	const char* GetName2(unsigned int vguiPanel)
+	{
+		typedef const char* (__thiscall* Fn)(PVOID, unsigned int);
+		return getvfunc<Fn>(this, 36)(this, vguiPanel); //  Name of panel is at index 36
+	}
 };
 
 struct Vertex_t
@@ -1137,17 +1142,39 @@ public:
 	virtual void		PaintSoftwareCursor() = 0;
 
 
-
 	void DrawSetColor2(int r, int g, int b, int a)
 	{
 		typedef void(__thiscall* fn)(void*, int, int, int, int);
-		getvfunc<fn>(this, 11)(this, r, g, b, a);
+		getvfunc<fn>(this, 11)(this, r, g, b, a); //index 11
 	}
-
 	void DrawFilledRect2(int x0, int y0, int x1, int y1)
 	{
 		typedef void(__thiscall* fn)(void*, int, int, int, int);
-		getvfunc<fn>(this, 12)(this, x0, y0, x1, y1);
+		getvfunc<fn>(this, 12)(this, x0, y0, x1, y1); //index 12
 	}
+	void DrawOutlineRect2(int x0, int y0, int x1, int y1)
+	{
+		typedef void(__thiscall* fn)(void*, int, int, int, int);
+		getvfunc<fn>(this, 14)(this, x0, y0, x1, y1);
+	}
+	void DrawLine2(int x0, int y0, int x1, int y1)
+	{
+		typedef void(__thiscall* fn)(void*, int, int, int, int);
+		getvfunc<fn>(this, 15)(this, x0, y0, x1, y1);
+	}
+
+
 };
 
+//INDEX FOR ISURFACE STUFF
+/*
+	DrawLine == 15
+	DrawSetTextFont == 19
+	DrawSetTextColorA == 11
+	DrawSetTextColorB == 25
+	DrawSetTextPos == 26
+
+
+
+
+*/

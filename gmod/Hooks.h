@@ -85,15 +85,15 @@ void __fastcall PaintTraverseFn(void* ecx, void* edx, unsigned int vguiPanel, bo
     int x, y;
     CInterfaces::pEngine->GetScreenSize(x, y);
 
-    CInterfaces::pSurface->DrawSetColor2(0, 0, 255, 255);
+    CInterfaces::pSurface->DrawSetColor2(0, 255, 255, 255);
 
     if (CInterfaces::pEngine->IsInGame())
     {
         static unsigned int drawPanel;
 
-        const char* pannelName = CInterfaces::pPanel->GetName(vguiPanel);
-        //check to see if pannel name is matsurface
-        if (pannelName[0] == 'M' && pannelName[2] == 't')
+        PCHAR pannelName = (PCHAR)CInterfaces::pPanel->GetName2(vguiPanel);
+        //check to see if pannel name is MatSystemTopPanel
+        if (strstr(pannelName, "MatSystemTopPanel"))
             drawPanel = vguiPanel;
 
 
@@ -103,7 +103,7 @@ void __fastcall PaintTraverseFn(void* ecx, void* edx, unsigned int vguiPanel, bo
         }
         else
         {
-            CInterfaces::pSurface->DrawFilledRect2(0, 0, 500, 500);
+            CInterfaces::pSurface->DrawLine2(0, 0, 400, 300);
         }
 
 
