@@ -11,12 +11,12 @@ void ESP::DrawBox()
 
 		Vector footPosOut, headPos;
 
-		int headBone = oAim.GetHeadBone(CurrentEnt, oAim.boneArray[12]);
-		Vector bonePos = oAim.GetBonePos(CurrentEnt, headBone);
-		int footBone = oAim.GetHeadBone(CurrentEnt, oAim.boneArray[7]);
-		Vector footPos = oAim.GetBonePos(CurrentEnt, footBone);
+		int headBone = EntStuff.GrabBone(CurrentEnt, EntStuff.boneArray[12]);
+		Vector bonePos = EntStuff.GetBonePos(CurrentEnt, headBone);
+		int footBone = EntStuff.GrabBone(CurrentEnt, EntStuff.boneArray[7]);
+		Vector footPos = EntStuff.GetBonePos(CurrentEnt, footBone);
 
-		if (oMath.WorldToScreen(bonePos, headPos) && oMath.WorldToScreen(footPos, footPosOut))
+		if (EntStuff.oMath.WorldToScreen(bonePos, headPos) && EntStuff.oMath.WorldToScreen(footPos, footPosOut))
 		{
 			CInterfaces::pSurface->DrawOutlineRect2(headPos.x, headPos.y, footPosOut.x, footPosOut.y);
 		}
@@ -37,14 +37,14 @@ void ESP::DrawText2()
 		CInterfaces::pSurface->SetGlpyhSet2(2, "Tahoma", 10, 600, 0, 0, 0);
 		CInterfaces::pSurface->DrawSetTextColor2(Menu);
 		CInterfaces::pSurface->DrawSetTextPos2(0, 0);
-		CInterfaces::pSurface->DrawPrintText2(L"Gmod Internal 2.0", std::char_traits<wchar_t>::length(L"Gmod Internal 2.0")); 
+		CInterfaces::pSurface->DrawPrintText2(L"Gmod Internal 2.0", wcslen(L"Gmod Internal 2.0"));
 
 		if (bESP)
 		{
 			CInterfaces::pSurface->SetGlpyhSet2(2, "Tahoma", 10, 500, 0, 0, 0);
 			CInterfaces::pSurface->DrawSetTextColor2(Activated);
 			CInterfaces::pSurface->DrawSetTextPos2(0, 30);
-			CInterfaces::pSurface->DrawPrintText2(L"ESP", std::char_traits<wchar_t>::length(L"ESP"));
+			CInterfaces::pSurface->DrawPrintText2(L"ESP", wcslen(L"ESP"));
 			DrawBox();
 		}
 		else
@@ -52,7 +52,7 @@ void ESP::DrawText2()
 			CInterfaces::pSurface->SetGlpyhSet2(2, "Tahoma", 10, 500, 0, 0, 0);
 			CInterfaces::pSurface->DrawSetTextColor2(NonActivated);
 			CInterfaces::pSurface->DrawSetTextPos2(0, 30);
-			CInterfaces::pSurface->DrawPrintText2(L"ESP", std::char_traits<wchar_t>::length(L"ESP"));
+			CInterfaces::pSurface->DrawPrintText2(L"ESP", wcslen(L"ESP"));
 		}
 
 
@@ -61,14 +61,14 @@ void ESP::DrawText2()
 			CInterfaces::pSurface->SetGlpyhSet2(2, "Tahoma", 10, 500, 0, 0, 0);
 			CInterfaces::pSurface->DrawSetTextColor2(Activated);
 			CInterfaces::pSurface->DrawSetTextPos2(0, 60);
-			CInterfaces::pSurface->DrawPrintText2(L"Aimbot", std::char_traits<wchar_t>::length(L"Aimbot"));
+			CInterfaces::pSurface->DrawPrintText2(L"Aimbot", wcslen(L"Aimbot"));
 		}
 		else
 		{
 			CInterfaces::pSurface->SetGlpyhSet2(2, "Tahoma", 10, 500, 0, 0, 0);
 			CInterfaces::pSurface->DrawSetTextColor2(NonActivated);
 			CInterfaces::pSurface->DrawSetTextPos2(0, 60);
-			CInterfaces::pSurface->DrawPrintText2(L"Aimbot", std::char_traits<wchar_t>::length(L"Aimbot"));
+			CInterfaces::pSurface->DrawPrintText2(L"Aimbot", wcslen(L"Aimbot"));
 		}
 
 
@@ -102,7 +102,7 @@ void ESP::DrawName()
 
 		CurrentOrg = CurrentEnt->GetOrigin();
 
-		if (oMath.WorldToScreen(CurrentOrg, WorldToScreenEnt))
+		if (EntStuff.oMath.WorldToScreen(CurrentOrg, WorldToScreenEnt))
 		{
 			CInterfaces::pSurface->DrawSetTextColor2(Blue);
 			CInterfaces::pSurface->DrawSetTextPos2(WorldToScreenEnt.x, WorldToScreenEnt.y);
@@ -126,7 +126,7 @@ bool ESP::IsValid(IClientEntity* ent)
 {
 	if (ent == NULL)
 		return false;
-	if (ent == oAim.pLocalPlayer)
+	if (ent == EntStuff.pLocalPlayer)
 		return false;
 	if (ent->GetClientClass()->m_ClassID != 70)
 		return false;

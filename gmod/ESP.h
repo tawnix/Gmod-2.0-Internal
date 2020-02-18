@@ -1,15 +1,13 @@
 #pragma once
 #include "Interface.h"
-#include "Math.h"
-#include "Aimbot.h"
+#include "Entity.h"
+
 
 
 
 class ESP {
 public:
-	Math oMath;
-	aimbot oAim;
-	
+	EntityStuff EntStuff;
 	//loop through entities and draw them.
 	void DrawBox();
 	void DrawText2();
@@ -19,7 +17,7 @@ public:
 
 
 
-	bool bESP = false;
+	bool bESP = true;
 	bool bMenu = true;
 	bool bAimbot = false;
 

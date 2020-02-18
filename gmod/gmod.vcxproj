@@ -32,11 +32,11 @@
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -141,6 +141,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Aimbot.cpp" />
+    <ClCompile Include="Entity.cpp" />
     <ClCompile Include="ESP.cpp" />
     <ClCompile Include="Hooks.cpp" />
     <ClCompile Include="Interface.cpp" />
@@ -150,6 +151,7 @@
   <ItemGroup>
     <ClInclude Include="Aimbot.h" />
     <ClInclude Include="Color.h" />
+    <ClInclude Include="Entity.h" />
     <ClInclude Include="ESP.h" />
     <ClInclude Include="Hooks.h" />
     <ClInclude Include="Interface.h" />

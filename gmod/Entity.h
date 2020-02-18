@@ -1,18 +1,24 @@
 #pragma once
-#include <iostream>
-#include "Entity.h"
+#include "SDK Stuff.h"
+#include "Interface.h"
+#include "Math.h"
 
-
-#define PI 3.1415926535897
-
-
-class aimbot
+class EntityStuff
 {
 public:
-	EntityStuff EntStuff;
-	Vector toAim;
+	Math oMath;
 
-	void StartAim();
+	IClientEntity* pLocalPlayer;
+	EntityStuff()
+	{
+		pLocalPlayer = (IClientEntity*)CInterfaces::pEntityList->GetClientEntity(CInterfaces::pEngine->GetLocalPlayer());
+	}
+
+	IClientEntity* GrabClosestEnt();
+	bool IsValid(IClientEntity* ent);
+	int GrabBone(IClientEntity* ent, const char* boneName);
+	Vector GetBonePos(IClientEntity* ent, int boneIndex);
+
 
 	const char* boneArray[19] = {
 		"ValveBiped.Bip01_Pelvis",

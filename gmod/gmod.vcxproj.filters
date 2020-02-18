@@ -28,6 +28,12 @@
     <Filter Include="Header Files\Hook Stuff">
       <UniqueIdentifier>{2dadded8-3eb1-465e-86a3-ca094b49fefa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Entity Stuff">
+      <UniqueIdentifier>{4aace8d3-050d-47ce-bb77-437dd570989c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Entity Stuff">
+      <UniqueIdentifier>{5edbb6ad-4613-4e20-a345-bc4ae527cea5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp">
@@ -47,6 +53,9 @@
     </ClCompile>
     <ClCompile Include="ESP.cpp">
       <Filter>Source Files\Features</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Source Files\Entity Stuff</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -85,6 +94,9 @@
     </ClInclude>
     <ClInclude Include="InterfaceVT.h">
       <Filter>Header Files\Hook Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>Header Files\Entity Stuff</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
