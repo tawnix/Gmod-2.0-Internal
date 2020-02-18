@@ -1,6 +1,3 @@
-#include <iostream>
-#include <Windows.h>
-#include "Aimbot.h"
 #include "Hooks.h"
 
 
@@ -13,7 +10,7 @@ int main()
 
 	CCreateInterface::GetInstance().Initialize();
 
-	GrabClientModeShared();
+	InitaliseHooks();
 
 	while (true)
 	{

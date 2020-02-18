@@ -1,8 +1,9 @@
 #pragma once
 #include "SDK Stuff.h"
-#include "Interface.h"
 #include "Aimbot.h"
 #include <Windows.h>
+#include "ESP.h"
+
 
 
 class VmtHook {
@@ -65,28 +66,23 @@ public:
     }
 };
 
+
+
 typedef bool(__thiscall* createMove_t)(void*, float, CUserCmd*);
 createMove_t oCreateMove;
 
 typedef void(__thiscall* paintTraverse_t)(void*, unsigned int, bool, bool);
 paintTraverse_t oPaintTraverse;
 
-
-
 VmtHook* v_hook;
 VmtHook* v_hook2;
 
-//use unsigned int for guipanel because i couldnt find defenition in sdk lool
 void __fastcall PaintTraverseFn(void* ecx, void* edx, unsigned int vguiPanel, bool forceRepaint, bool allowForce)
 {
     oPaintTraverse = (paintTraverse_t)v_hook2->GetOriginalFunction(41);
     oPaintTraverse(ecx, vguiPanel, forceRepaint, allowForce);
 
-    int x, y;
-    CInterfaces::pEngine->GetScreenSize(x, y);
-
-    CInterfaces::pSurface->DrawSetColor2(0, 255, 255, 255);
-
+    CInterfaces::pSurface->DrawSetColor2(255, 0, 0, 255);
     if (CInterfaces::pEngine->IsInGame())
     {
         static unsigned int drawPanel;
@@ -96,53 +92,44 @@ void __fastcall PaintTraverseFn(void* ecx, void* edx, unsigned int vguiPanel, bo
         if (strstr(pannelName, "MatSystemTopPanel"))
             drawPanel = vguiPanel;
 
-
         if (vguiPanel != drawPanel)
         {
             return;
         }
         else
         {
-            CInterfaces::pSurface->DrawLine2(0, 0, 400, 300);
+            ESP oESP;
+            oESP.DrawText2();
+            oESP.DrawName();
         }
-
-
-
-
     }
 }
-
-
 
 bool __fastcall CreateMoveFn(void* ecx, void* edx, float SampleTime, CUserCmd* cmd)
 {
     oCreateMove = (createMove_t)v_hook->GetOriginalFunction(21);
-
     oCreateMove(ecx, SampleTime, cmd);
 
-	CUserCmd* m_Cmd = cmd;
+    CUserCmd* m_Cmd = cmd;
 
     if (!cmd->m_cmd_nr)
         return true;
 
     if (CInterfaces::pEngine->IsInGame())
     {
-        aimbot oAim;
-        if(GetAsyncKeyState(VK_XBUTTON2))
+        if (GetAsyncKeyState(VK_XBUTTON2))
         {
+            aimbot oAim;
             oAim.StartAim();
-
             m_Cmd->m_viewangles = oAim.toAim;
         }
     }
-
-	return true;
+    return true;
 }
 
 
 
-
-void GrabClientModeShared()
+void InitaliseHooks()
 {
 	ClientModeShared* ClientShared = **reinterpret_cast<ClientModeShared***>((*reinterpret_cast<uintptr_t**>(CInterfaces::pClient))[10] + 5);
 
@@ -152,13 +139,18 @@ void GrabClientModeShared()
     
     v_hook2 = new VmtHook(reinterpret_cast<void*>(CInterfaces::pPanel));
 
+    CInterfaces::pSurface->FontCreate2();
+
     (paintTraverse_t)v_hook2->HookFunction(static_cast<void*>(PaintTraverseFn), 41);
 
-
-
+    
 }
 
 
 
 
+/*
 
+ CInterfaces::pSurface->DrawLine2((width / 2), ((height / 2) - 15), (width/2), ((height/2) + 15));
+ CInterfaces::pSurface->DrawLine2((width / 2) - 15, (height / 2), (width / 2) + 15, (height / 2));
+*/

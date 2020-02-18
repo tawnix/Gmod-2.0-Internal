@@ -141,6 +141,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Aimbot.cpp" />
+    <ClCompile Include="ESP.cpp" />
+    <ClCompile Include="Hooks.cpp" />
     <ClCompile Include="Interface.cpp" />
     <ClCompile Include="Math.cpp" />
     <ClCompile Include="Source.cpp" />
@@ -148,6 +150,7 @@
   <ItemGroup>
     <ClInclude Include="Aimbot.h" />
     <ClInclude Include="Color.h" />
+    <ClInclude Include="ESP.h" />
     <ClInclude Include="Hooks.h" />
     <ClInclude Include="Interface.h" />
     <ClInclude Include="InterfaceVT.h" />

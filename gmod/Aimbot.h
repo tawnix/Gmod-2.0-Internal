@@ -4,6 +4,7 @@
 #include "ModelInfo.h"
 #include <iostream>
 
+
 #define PI 3.1415926535897
 
 
@@ -30,29 +31,6 @@ public:
 	int GetHeadBone(IClientEntity* ent, const char* boneName);
 	Vector GetBonePos(IClientEntity* ent, int boneIndex);
 	void StartAim();
-
-
-
-	/*float RealDifference, DistanceToEnt;
-	float MaxDiff = 9999999.0f;
-
-	DWORD engine = (DWORD)GetModuleHandle("engine.dll");
-
-	Vector LocalPlayerOrg, CurrentEntOrg, AngleToAim, CurrenEntBonePos, vHeadPos;
-
-	matrix3x4_t bonePos[128];
-
-	float* Pitch = (float*)(engine + 0x4DF764);
-	float* Yaw = (float*)(engine + 0x4DF768);
-
-	void StartAim();
-	int GetBestEntity();
-
-	void GetEnemyBonePos(IClientEntity* Entity, int BestBoneID);
-	bool CheckIfValid(IClientEntity* CurrentEntity);
-
-	int GetHitBox(IClientEntity* Entity, const char* cBoneName);
-	*/
 
 	const char* boneArray[19] = {
 		"ValveBiped.Bip01_Pelvis",

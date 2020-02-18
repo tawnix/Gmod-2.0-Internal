@@ -1,6 +1,6 @@
 #pragma once
-#include "SDK Stuff.h"
 #include <Windows.h>
+#include "SDK Stuff.h"
 
 typedef void* (*CreateInterfaceFn)(const char* pName, int* pReturnCode);
 typedef void* (*InstantiateInterfaceFn)();

@@ -1,7 +1,6 @@
 #pragma once
 #include <cmath>
-#include "Vector.h"
-
+#include "Interface.h"
 
 class Math
 {
@@ -11,5 +10,10 @@ public:
 	Vector CalcAngle(Vector LocalPlayerOrigin, Vector EnemyPlayerOrigin);
 
 	float GetDistAngles(float* AngleYaw, float* AnglePitch, Vector AnglesToAim);
+
+	bool WorldToScreen(Vector& in, Vector& out);
+
+    RECT GetViewport();
+
 
 };

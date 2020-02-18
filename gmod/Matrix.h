@@ -1,5 +1,6 @@
 #pragma once
 #include "Vector.h"
+
 inline float BitsToFloat(unsigned __int32 i)
 {
 	union Convertor_t

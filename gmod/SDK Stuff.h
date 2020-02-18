@@ -1,9 +1,9 @@
 #pragma once
-#include <Windows.h>
-#include "InterfaceVT.h"
 #include "Matrix.h"
 #include "ModelInfo.h"
+#include "InterfaceVT.h"
 #include "Color.h"
+#include <Windows.h>
 
 class IClientNetworkable;
 
@@ -27,6 +27,13 @@ class IAppSystem
 {
 
 };
+
+struct player_info_t
+{
+	char Name[32];
+	char PAD2[0x200];
+};
+
 
 
 class CUserCmd {
@@ -56,6 +63,12 @@ public:
 	{
 		typedef void(__thiscall* OriginalFn)(PVOID, int&, int&);
 		return getvfunc<OriginalFn>(this, 5)(this, width, height);
+	}
+	// GetPlayerInfo index 8
+	bool GetPlayerInfo(int entNum, player_info_t* pinfo)
+	{
+		typedef bool(__thiscall* OriginalFn)(PVOID, int, player_info_t*);
+		return getvfunc<OriginalFn>(this, 8)(this, entNum, pinfo);
 	}
 	bool Con_IsVisible(void)
 	{
@@ -96,6 +109,11 @@ public:
 	{
 		typedef void(__thiscall* OriginalFn)(PVOID, int idx, char const* fmt);
 		return getvfunc<OriginalFn>(this, 30)(this, idx, fmt);
+	}
+	const matrix3x4_t& WorldToScreenMatrix()
+	{
+		typedef const matrix3x4_t& (__thiscall* OriginalFn)(PVOID);
+		return getvfunc<OriginalFn>(this, 36)(this);
 	}
 	const char* GetLevelName(void)
 	{
@@ -1145,36 +1163,60 @@ public:
 	void DrawSetColor2(int r, int g, int b, int a)
 	{
 		typedef void(__thiscall* fn)(void*, int, int, int, int);
-		getvfunc<fn>(this, 11)(this, r, g, b, a); //index 11
+		return getvfunc<fn>(this, 11)(this, r, g, b, a);
 	}
 	void DrawFilledRect2(int x0, int y0, int x1, int y1)
 	{
 		typedef void(__thiscall* fn)(void*, int, int, int, int);
-		getvfunc<fn>(this, 12)(this, x0, y0, x1, y1); //index 12
+		return getvfunc<fn>(this, 12)(this, x0, y0, x1, y1);
 	}
 	void DrawOutlineRect2(int x0, int y0, int x1, int y1)
 	{
 		typedef void(__thiscall* fn)(void*, int, int, int, int);
-		getvfunc<fn>(this, 14)(this, x0, y0, x1, y1);
+		return getvfunc<fn>(this, 14)(this, x0, y0, x1, y1);
 	}
 	void DrawLine2(int x0, int y0, int x1, int y1)
 	{
 		typedef void(__thiscall* fn)(void*, int, int, int, int);
-		getvfunc<fn>(this, 15)(this, x0, y0, x1, y1);
+		return getvfunc<fn>(this, 15)(this, x0, y0, x1, y1);
 	}
-
-
+	void DrawSetTextFont2(unsigned long HFont)
+	{
+		typedef void(__thiscall* fn)(void*, unsigned long);
+		return getvfunc<fn>(this, 17)(this, HFont);
+	}
+	void DrawSetTextColor2(Color col)
+	{
+		typedef void(__thiscall* fn)(void*, Color);
+		return getvfunc<fn>(this, 18)(this, col);
+	}
+	void DrawSetTextPos2(int x, int y)
+	{
+		typedef void(__thiscall* fn)(void*, int, int);
+		return getvfunc<fn>(this, 20)(this, x, y);
+	}
+	void DrawPrintText2(const wchar_t* text, int textLen)
+	{
+		typedef void(__thiscall* fn)(void*, const wchar_t*, int, int);
+		return getvfunc<fn>(this, 22)(this, text, textLen, 0);
+	}
+	unsigned long FontCreate2()
+	{
+		typedef unsigned long(__thiscall* fn)(void*);
+		return getvfunc<fn>(this, 66)(this);
+	}
+	void SetGlpyhSet2(unsigned long font, const char* windowsFontName, int tall, int weight, int blur, int scanlines, int flags)
+	{
+		typedef void(__thiscall* fn)(void*, unsigned long, const char*, int, int, int, int, int, int, int);
+		return getvfunc<fn>(this, 67)(this, font, windowsFontName, tall, weight, blur, scanlines, flags, 0, 0);
+	}
 };
 
-//INDEX FOR ISURFACE STUFF
+//INDEX FOR ISURFACE CLASS
 /*
 	DrawLine == 15
 	DrawSetTextFont == 19
-	DrawSetTextColorA == 11
-	DrawSetTextColorB == 25
-	DrawSetTextPos == 26
-
-
-
-
+	DrawSetTextColorA == 20
+	DrawSetTextPos == 22
+	SetGlpyhSet == 68
 */
