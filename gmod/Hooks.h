@@ -6,6 +6,7 @@
 
 
 
+
 class VmtHook {
     std::uintptr_t** baseclass_ = nullptr;
     std::unique_ptr<std::uintptr_t[]> current_vft_ = nullptr;
@@ -82,26 +83,30 @@ void __fastcall PaintTraverseFn(void* ecx, void* edx, unsigned int vguiPanel, bo
     oPaintTraverse = (paintTraverse_t)v_hook2->GetOriginalFunction(41);
     oPaintTraverse(ecx, vguiPanel, forceRepaint, allowForce);
 
-    CInterfaces::pSurface->DrawSetColor2(255, 0, 0, 255);
+
+
     if (CInterfaces::pEngine->IsInGame())
     {
         static unsigned int drawPanel;
 
         PCHAR pannelName = (PCHAR)CInterfaces::pPanel->GetName2(vguiPanel);
         //check to see if pannel name is MatSystemTopPanel
-        if (strstr(pannelName, "MatSystemTopPanel"))
+        if (strstr(pannelName, "FocusOverlayPanel"))//MatSystemTopPanel
             drawPanel = vguiPanel;
 
         if (vguiPanel != drawPanel)
         {
             return;
         }
-        else
-        {
-            ESP oESP;
-            oESP.DrawText2();
-            oESP.DrawName();
-        }
+
+        if (CInterfaces::pEngine->IsTakingScreenshot())
+            return;
+
+        ESP oESP;
+        oESP.DrawText2();
+        oESP.DrawName();
+        oESP.DrawBox();
+        oESP.DrawHealthValue();
     }
 }
 
@@ -119,8 +124,12 @@ bool __fastcall CreateMoveFn(void* ecx, void* edx, float SampleTime, CUserCmd* c
     {
         if (GetAsyncKeyState(VK_XBUTTON2))
         {
+
+
             aimbot oAim;
-            oAim.StartAim();
+            oAim.StartAim(m_Cmd);
+
+
             m_Cmd->m_viewangles = oAim.toAim;
         }
     }

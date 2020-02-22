@@ -37,4 +37,5 @@ struct CInterfaces
 	static CHLClient* pClient;
 	static IPanel* pPanel;
 	static ISurface* pSurface;
+	static CInput* pInput;
 };

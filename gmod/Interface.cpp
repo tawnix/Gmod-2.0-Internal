@@ -7,6 +7,7 @@ IVModelInfo* CInterfaces::pModelInfo;
 CHLClient* CInterfaces::pClient;
 IPanel* CInterfaces::pPanel;
 ISurface* CInterfaces::pSurface;
+CInput* CInterfaces::pInput;
 
 void CCreateInterface::Initialize()
 {
@@ -14,6 +15,7 @@ void CCreateInterface::Initialize()
 	auto engineFactory = GetModuleFactory(GetModuleHandle("engine.dll"));
 	auto vGUIFactory = GetModuleFactory(GetModuleHandle("vgui2.dll"));
 	auto vGUIMatsurface = GetModuleFactory(GetModuleHandle("vguimatsurface.dll"));
+	auto inputFactory = GetModuleFactory(GetModuleHandle("inputsystem.dll"));
 
 	CInterfaces::pEntityList = GetInterface<IClientEntityList*>(clientFactory, "VClientEntityList003");
 	CInterfaces::pEngine = GetInterface<IEngineClient*>(engineFactory, "VEngineClient015");
@@ -21,4 +23,5 @@ void CCreateInterface::Initialize()
 	CInterfaces::pClient = GetInterface<CHLClient*>(clientFactory, "VClient017");
 	CInterfaces::pPanel = GetInterface<IPanel*>(vGUIFactory, "VGUI_Panel009");
 	CInterfaces::pSurface = GetInterface<ISurface*>(vGUIMatsurface, "VGUI_Surface030");
+	CInterfaces::pInput = GetInterface<CInput*>(inputFactory, "InputSystemVersion001");
 }

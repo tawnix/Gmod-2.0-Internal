@@ -9,10 +9,13 @@
 class aimbot
 {
 public:
+	float currDiff = 0.0f;
 	EntityStuff EntStuff;
 	Vector toAim;
 
-	void StartAim();
+	IClientEntity* GetClosestToXHair(CUserCmd* cmd);
+	void StartAim(CUserCmd* cmd);
+
 
 	const char* boneArray[19] = {
 		"ValveBiped.Bip01_Pelvis",

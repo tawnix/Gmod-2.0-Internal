@@ -1,6 +1,8 @@
 #pragma once
 #include "Interface.h"
 #include "Entity.h"
+#include <string>
+using namespace std;
 
 
 
@@ -12,8 +14,8 @@ public:
 	void DrawBox();
 	void DrawText2();
 	void DrawName();
+	void DrawHealthValue();
 
-	bool IsValid(IClientEntity* ent);
 
 
 
@@ -28,6 +30,9 @@ public:
 	Color NonActivated = { 255, 255, 255, 255 };
 	Color Red = { 255, 0, 0, 255 };
 	Color Blue = { 0, 0, 255, 255 };
+	Color Green = { 0, 255, 0, 255 };
+	Color Yellow = { 255, 255, 0, 255 };
+	Color RandomCol = { 150, 0, 130, 255 };
 
 
 };

@@ -31,7 +31,7 @@ bool EntityStuff::IsValid(IClientEntity* ent)
 		return false;
 	if (ent == pLocalPlayer)
 		return false;
-	if (ent->GetClientClass()->m_ClassID != 70)
+	if (ent->GetClientClass()->m_ClassID != ClassIDs::CGMOD_Player)
 		return false;
 	if (ent->GetHealth() <= 0 || ent->GetHealth() >= 999999999)
 		return false;
@@ -88,3 +88,10 @@ Vector EntityStuff::GetBonePos(IClientEntity* ent, int boneIndex)
 
 	return vHeadPos;
 }
+
+void EntityStuff::TestStuff(IClientEntity* ent)
+{
+	std::cout << "Class ID: " << ent->GetClientClass()->m_ClassID << "\n";
+	std::cout << "NetworkName: " << ent->GetClientClass()->m_pNetworkName << "\n";
+}
+

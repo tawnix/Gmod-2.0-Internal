@@ -9,7 +9,7 @@ public:
 
 	Vector CalcAngle(Vector LocalPlayerOrigin, Vector EnemyPlayerOrigin);
 
-	float GetDistAngles(float* AngleYaw, float* AnglePitch, Vector AnglesToAim);
+	float GetDistAngles(Vector myViewAngles, Vector desViewAngles);
 
 	bool WorldToScreen(Vector& in, Vector& out);
 
