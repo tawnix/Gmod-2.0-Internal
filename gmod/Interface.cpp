@@ -8,6 +8,7 @@ CHLClient* CInterfaces::pClient;
 IPanel* CInterfaces::pPanel;
 ISurface* CInterfaces::pSurface;
 CInput* CInterfaces::pInput;
+IEngineTrace* CInterfaces::pEngineTrace;
 
 void CCreateInterface::Initialize()
 {
@@ -24,4 +25,5 @@ void CCreateInterface::Initialize()
 	CInterfaces::pPanel = GetInterface<IPanel*>(vGUIFactory, "VGUI_Panel009");
 	CInterfaces::pSurface = GetInterface<ISurface*>(vGUIMatsurface, "VGUI_Surface030");
 	CInterfaces::pInput = GetInterface<CInput*>(inputFactory, "InputSystemVersion001");
+	CInterfaces::pEngineTrace = GetInterface<IEngineTrace*>(engineFactory, "EngineTraceClient003");
 }

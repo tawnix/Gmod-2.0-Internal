@@ -42,38 +42,7 @@ void ESP::DrawText2()
 		CInterfaces::pSurface->SetGlpyhSet2(2, "Tahoma", 10, 600, 0, 0, 0);
 		CInterfaces::pSurface->DrawSetTextColor2(Menu);
 		CInterfaces::pSurface->DrawSetTextPos2(0, 0);
-		CInterfaces::pSurface->DrawPrintText2(L"Gmod Internal 2.0", wcslen(L"Gmod Internal 2.0"));
-
-		if (bESP)
-		{
-			CInterfaces::pSurface->SetGlpyhSet2(2, "Tahoma", 10, 500, 0, 0, 0);
-			CInterfaces::pSurface->DrawSetTextColor2(Activated);
-			CInterfaces::pSurface->DrawSetTextPos2(0, 30);
-			CInterfaces::pSurface->DrawPrintText2(L"ESP", wcslen(L"ESP"));
-		}
-		else
-		{
-			CInterfaces::pSurface->DrawSetTextColor2(NonActivated);
-			CInterfaces::pSurface->DrawSetTextPos2(0, 30);
-			CInterfaces::pSurface->DrawPrintText2(L"ESP", wcslen(L"ESP"));
-		}
-
-
-		if (bAimbot)
-		{
-			CInterfaces::pSurface->DrawSetTextColor2(Activated);
-			CInterfaces::pSurface->DrawSetTextPos2(0, 60);
-			CInterfaces::pSurface->DrawPrintText2(L"Aimbot", wcslen(L"Aimbot"));
-		}
-		else
-		{
-			CInterfaces::pSurface->DrawSetTextColor2(NonActivated);
-			CInterfaces::pSurface->DrawSetTextPos2(0, 60);
-			CInterfaces::pSurface->DrawPrintText2(L"Aimbot", wcslen(L"Aimbot"));
-		}
-
-
-
+		CInterfaces::pSurface->DrawPrintText2(L"Gmod Internal 2.0", wcslen(L"Gmod Internal 2.1"));
 	}
 }
 
@@ -104,7 +73,7 @@ void ESP::DrawName()
 
 			std::string output = std::to_string(distance);
 
-			CInterfaces::pSurface->DrawSetTextColor2(Blue);
+			CInterfaces::pSurface->DrawSetTextColor2(Menu);
 			CInterfaces::pSurface->DrawSetTextPos2(WorldToScreenEnt.x, WorldToScreenEnt.y);
 			CInterfaces::pEngine->GetPlayerInfo(i, &pinfo);
 			size_t origsize = strlen(pinfo.Name) + 1;
@@ -136,10 +105,7 @@ void ESP::DrawHealthValue()
 		Vector WorldToScreenEnt, CurrentOrg;
 
 		CurrentOrg = CurrentEnt->GetOrigin();
-
-
 		int EntHealth = CurrentEnt->GetHealth();
-
 
 		if (EntStuff.oMath.WorldToScreen(CurrentOrg, WorldToScreenEnt))
 		{
@@ -158,5 +124,13 @@ void ESP::DrawHealthValue()
 			CInterfaces::pSurface->DrawPrintText2(std::to_wstring(EntHealth).c_str(), wcslen(std::to_wstring(EntHealth).c_str()));
 		}
 	}
+}
+
+void ESP::DrawBoundBox(IClientEntity* ent, Color clr)
+{
+	//const matrix3x4_t& trans = ent->Co
+
+
+
 }
 

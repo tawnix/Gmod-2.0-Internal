@@ -38,4 +38,5 @@ struct CInterfaces
 	static IPanel* pPanel;
 	static ISurface* pSurface;
 	static CInput* pInput;
+	static IEngineTrace* pEngineTrace;
 };

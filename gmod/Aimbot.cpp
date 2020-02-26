@@ -16,6 +16,10 @@ IClientEntity* aimbot::GetClosestToXHair(CUserCmd* cmd)
 		int headBoneIndex = EntStuff.GrabBone(pCurrentEnt, boneArray[12]);
 		Vector bonePosition = EntStuff.GetBonePos(pCurrentEnt, headBoneIndex);
 
+
+		if (EntStuff.GetVisible(EntStuff.pLocalPlayer->GetOrigin(), bonePosition, pCurrentEnt) == false)
+			continue;
+
 		Vector dest = EntStuff.oMath.CalcAngle(EntStuff.pLocalPlayer->GetOrigin(), bonePosition);
 
 		Vector myViewAngles;
@@ -51,5 +55,43 @@ void aimbot::StartAim(CUserCmd* cmd)
 
 	toAim = EntStuff.oMath.CalcAngle(EntStuff.pLocalPlayer->GetOrigin(), bonePosition);
 
+	float difference = EntStuff.oMath.GetDistAngles(cmd->m_viewangles, toAim);
+
+	
+
+	if (difference < 20 && difference > -20)
+	{
+		float newX = cmd->m_viewangles.x;
+		float newY = cmd->m_viewangles.y;
+
+		Vector Diffs;
+		Diffs.x = toAim.x - newX;
+		Diffs.y = toAim.y - newY;
+
+
+		newX += Diffs.x / 20.0f;
+
+		if (newX > 180)
+			newX -= 360;
+		if (newX < -180)
+			newX += 360;
+
+		newY += Diffs.y / 20.0f;
+
+
+
+		if (toAim.x - newX  < 2.0f && toAim.x - newX > -2.0f)
+			newX = toAim.x;
+		if (toAim.y - newY < 2.0f && toAim.y - newY > -2.0f)
+			newY = toAim.y;
+
+		toAim.x = newX;
+		toAim.y = newY;
+	}
+	else
+	{
+		toAim = cmd->m_viewangles;
+
+	}
 }
 

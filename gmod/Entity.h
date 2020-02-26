@@ -4,6 +4,15 @@
 #include "Math.h"
 #include <iostream>
 
+#define CONTENTS_SOLID                  0x1
+#define CONTENTS_WINDOW                 0x2    
+#define CONTENTS_MOVEABLE               0x4000
+#define CONTENTS_MONSTER                0x2000000
+#define CONTENTS_GRATE                  0x8    
+
+
+#define MASK_SOLID  (CONTENTS_SOLID|CONTENTS_MOVEABLE|CONTENTS_WINDOW|CONTENTS_MONSTER|CONTENTS_GRATE)
+
 class EntityStuff
 {
 public:
@@ -20,6 +29,7 @@ public:
 	int GrabBone(IClientEntity* ent, const char* boneName);
 	Vector GetBonePos(IClientEntity* ent, int boneIndex);
 	void TestStuff(IClientEntity* ent);
+    bool GetVisible(Vector start, Vector end, IClientEntity* ent);
 
 
 	const char* boneArray[19] = {

@@ -95,3 +95,17 @@ void EntityStuff::TestStuff(IClientEntity* ent)
 	std::cout << "NetworkName: " << ent->GetClientClass()->m_pNetworkName << "\n";
 }
 
+bool EntityStuff::GetVisible(Vector start, Vector end, IClientEntity* ent)
+{
+	trace_t trace;
+	Ray_t ray;
+	CTraceFilter filter(pLocalPlayer);
+
+	ray.Init(start, end);
+
+	CInterfaces::pEngineTrace->TraceRay(ray, MASK_SOLID, NULL, &trace);
+
+
+	return (trace.m_pEnt == ent);
+}
+

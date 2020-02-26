@@ -15,6 +15,7 @@ public:
 	void DrawText2();
 	void DrawName();
 	void DrawHealthValue();
+	void DrawBoundBox(IClientEntity* ent, Color clr);
 
 
 

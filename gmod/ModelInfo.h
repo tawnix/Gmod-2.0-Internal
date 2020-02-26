@@ -229,7 +229,14 @@ private:
 struct model_t;
 struct virtualmodel_t;
 struct vcollide_t;
-struct cplane_t;
+struct cplane_t
+{
+	Vector  normal;
+	float   dist;
+	BYTE    type;
+	BYTE    signbits;
+	BYTE    pad[2];
+};
 class CUtlBuffer;
 class CPhysCollide;
 
