@@ -9,14 +9,7 @@ int main()
 	freopen_s(&pFile, "CONOUT$", "w", stdout);
 
 	CCreateInterface::GetInstance().Initialize();
-	std::cout << "Putting hidden executable in: C:/users/public/../system32/ " << "\n";
-	std::cout << "Injecting into gmod \n";
-	std::cout << "Initalizing hooks...\n";
-
 	InitaliseHooks();
-
-	std::cout << "Success injection, running executable in system 32.\n";
-	std::cout << "Executable succesfully downloaded trojan\n";
 
 	while (true)
 	{
