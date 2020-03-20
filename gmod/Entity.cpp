@@ -64,7 +64,7 @@ int EntityStuff::GrabBone(IClientEntity* ent, const char* boneName)
 
 		auto cHitBoxName = pStudioModel->pBone(pHitBox->bone)->pszName();
 
-		// use strstr because its fastest algorithim for comparing strings !!!!!!! niggers
+		// use strstr because its fastest algorithim for comparing strings !!!!!!!
 		if (boneName && strstr(cHitBoxName, boneName))
 		{
 			aimbone = pHitBox->bone;
