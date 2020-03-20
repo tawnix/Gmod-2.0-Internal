@@ -48,19 +48,19 @@ int EntityStuff::GrabBone(IClientEntity* ent, const char* boneName)
 	auto pStudioModel = CInterfaces::pModelInfo->GetStudioModel(ent->GetModel());
 
 	if (!pStudioModel)
-		return false;
+		return -1;
 
 	auto set = pStudioModel->pHitboxSet(0);
 
 	if (!set)
-		return false;
+		return -1;
 
 	for (int c = 0; c < set->numhitboxes; c++)
 	{
 		auto pHitBox = set->pHitbox(c);
 
 		if (!pHitBox)
-			return false;
+			return -1;
 
 		auto cHitBoxName = pStudioModel->pBone(pHitBox->bone)->pszName();
 
