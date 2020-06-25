@@ -103,10 +103,7 @@ void __fastcall PaintTraverseFn(void* ecx, void* edx, unsigned int vguiPanel, bo
             return;
 
         ESP oESP;
-        oESP.DrawText2();
-        oESP.DrawName();
-        oESP.DrawBox();
-        oESP.DrawHealthValue();
+        oESP.DrawESP();
     }
 }
 

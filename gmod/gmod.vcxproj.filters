@@ -45,9 +45,6 @@
     <ClCompile Include="Math.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Hooks.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Aimbot.cpp">
       <Filter>Source Files\Features</Filter>
     </ClCompile>
